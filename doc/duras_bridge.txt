@@ -1,0 +1,145 @@
+*duras_bridge.txt*    Vim / Neovim integration for duras
+
+Author:     Sergiy Duras
+License:    ISC
+Repository: https://github.com/sduras/duras_bridge
+
+================================================================================
+CONTENTS                                              *duras-bridge-contents*
+
+  1. Introduction .............................. |duras-bridge-intro|
+  2. Commands .................................. |duras-bridge-commands|
+  3. Mappings .................................. |duras-bridge-mappings|
+  4. Clipboard ................................. |duras-bridge-clipboard|
+  5. Limitations ............................... |duras-bridge-limitations|
+
+================================================================================
+1. INTRODUCTION                                         *duras-bridge-intro*
+
+duras_bridge is a minimal integration layer between Vim/Neovim and the duras
+daily notes CLI. It covers three axes:
+
+  - Open notes in the current editor session (no nested process)
+  - Append buffer content, visual selections, or clipboard text to a note
+  - Search notes and navigate results from inside the editor
+
+Files:
+  plugin/duras_bridge.vim   Vim (including a-Shell on iOS)
+  plugin/duras_bridge.lua   Neovim
+
+No external dependencies beyond the duras CLI itself.
+
+================================================================================
+2. COMMANDS                                           *duras-bridge-commands*
+
+                                                                    *:DOpen*
+:DOpen [date]
+        Open a note in the current editor session. [date] accepts:
+          YYYY-MM-DD    absolute date
+          integer       offset from today (0 = today, -1 = yesterday)
+        Omit [date] to open today's note.
+
+        If the note does not exist yet, duras initialises it (writes the
+        header) before the file is opened. No nested editor process is
+        spawned.
+
+                                                                   *:DAppend*
+:DAppend [text]
+:[range]DAppend [text]
+        Append to today's note via `duras append -`.
+
+        No argument     Appends the current buffer. With a [range] active
+                        (e.g. from visual mode), appends only those lines.
+        text            Appends the literal text. No quoting needed:
+                            :DAppend meeting notes for Monday
+        -               Reads from the system clipboard and appends that.
+
+                                                                   *:DSearch*
+:DSearch {keyword}
+        Search all plain notes for {keyword} (literal, case-sensitive).
+        Opens a temporary [duras-search] buffer listing matching lines.
+
+        In the search buffer:
+          <CR>    Close buffer and open the note under the cursor.
+          :q      Close without navigating.
+
+                                                                *:DClipYank*
+:DClipYank
+        Copy the entire current buffer to the system clipboard.
+
+                                                               *:DClipPaste*
+:DClipPaste
+        Insert clipboard contents as lines below the cursor.
+
+                                                                *:DCopyPath*
+:DCopyPath
+        Copy today's note file path to the system clipboard.
+
+                                                                   *:DStats*
+:DStats
+        Print note counts, total size, date range, and streak.
+
+                                                                    *:DPath*
+:DPath
+        Print the file path of today's note.
+
+                                                                    *:DTags*
+:DTags [tag]
+        No argument    List all #tags found across notes.
+        tag            List notes containing #tag.
+
+        Pass the bare tag name without the leading #:
+            :DTags project      (not :DTags #project)
+
+================================================================================
+3. MAPPINGS                                           *duras-bridge-mappings*
+
+Default mappings applied in normal mode:
+
+  <Leader>do    :DOpen
+  <Leader>da    :DAppend
+  <Leader>ds    :DSearch   (cursor left ready for input)
+  <Leader>dp    :DPath
+
+Visual mode:
+
+  <Leader>da    :DAppend   (appends the selection)
+
+To disable all mappings, comment out the lines at the bottom of the plugin:
+  Vim:    the nnoremap / vnoremap block
+  Neovim: the vim.keymap.set block
+
+There is no g:duras_bridge_no_mappings guard.
+
+================================================================================
+4. CLIPBOARD                                         *duras-bridge-clipboard*
+
+Clipboard tools are probed at call time in priority order:
+
+  1. pbpaste / pbcopy      iOS, macOS (a-Shell)
+  2. xclip                 Linux X11
+  3. xsel                  Linux X11 (alternative)
+  4. getreg('+')           Vim register fallback (read only)
+
+Every tool call is checked by exit status. A tool that returns a non-zero
+exit code is skipped; its error output is never used as clipboard content.
+This is necessary because some Linux builds of Vim capture stderr through
+system() alongside stdout.
+
+================================================================================
+5. LIMITATIONS                                     *duras-bridge-limitations*
+
+Encrypted notes (.dn.gpg) are not supported. Use `duras -c` from the shell
+for confidential notes.
+
+:DAppend always appends to today's note. To append to a past date:
+    duras append -d DATE text
+
+:DSearch does not expose the -i flag. For case-insensitive search:
+    duras search -i keyword
+
+All system() calls are synchronous. On large note sets, :DSearch may
+introduce a short pause.
+
+================================================================================
+vim:ft=help:tw=78:
