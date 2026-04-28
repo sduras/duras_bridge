@@ -1,7 +1,9 @@
 # duras_bridge — Vim / Neovim integration
 
 Minimal bridge between editor buffers, the system clipboard, and the
-[duras](https://github.com/sduras/duras) CLI.
+[duras](https://codeberg.org/duras/duras) CLI.
+
+Requires duras 1.1.0 or later.
 
 Two files. Same commands.
 
@@ -16,24 +18,24 @@ No dependencies. No plugin manager required.
 
 ## Installation
 
-### Plugin manager (recommended)
+### Plugin manager
 
 **Neovim — lazy.nvim**
 
 ```lua
-{ url = 'https://github.com/sduras/duras_bridge' }
+{ url = 'https://codeberg.org/duras/duras_bridge' }
 ```
 
 **Vim — vim-plug**
 
 ```vim
-Plug 'https://github.com/sduras/duras_bridge'
+Plug 'https://codeberg.org/duras/duras_bridge'
 ```
 
 **Vim — pathogen**
 
 ```sh
-git clone https://github.com/sduras/duras_bridge ~/.vim/bundle/duras_bridge
+git clone https://codeberg.org/duras/duras_bridge ~/.vim/bundle/duras_bridge
 ```
 
 The plugin files live in `plugin/`. Any manager that adds the repo root to
@@ -51,7 +53,7 @@ enable `:help duras_bridge`.
 Clone once, point the editor at it:
 
 ```sh
-git clone https://github.com/sduras/duras_bridge ~/src/duras_bridge
+git clone https://codeberg.org/duras/duras_bridge ~/src/duras_bridge
 ```
 
 **Vim** — add to `.vimrc`:
@@ -131,6 +133,10 @@ If empty or error: fallback to `getreg('+')`.
 :DAppend -        " clipboard
 ```
 
+Text is normalized by duras before storage: trailing whitespace stripped
+per line, consecutive blank lines collapsed to one, tabs converted to
+spaces. This applies to all three input modes.
+
 ### Search
 
 ```vim
@@ -140,8 +146,8 @@ If empty or error: fallback to `getreg('+')`.
 
 Navigation:
 
-* `<CR>` — open
-* `:q` — close
+- `<CR>` — open
+- `:q` — close
 
 ### Clipboard
 
@@ -177,8 +183,8 @@ Visual mode: `<leader>da` appends selection.
 
 Disable by commenting mappings at file end:
 
-* Vim: `nnoremap` / `vnoremap`
-* Neovim: `vim.keymap.set`
+- Vim: `nnoremap` / `vnoremap`
+- Neovim: `vim.keymap.set`
 
 No `no_mappings` guard.
 
@@ -198,21 +204,22 @@ All system calls checked by exit status.
 
 ## a-Shell notes
 
-* Clipboard tools may be absent; fallback used
-* `system()` is synchronous; large note sets may introduce latency
+- Clipboard tools may be absent; fallback used
+- `system()` is synchronous; large note sets may introduce latency
 
 ---
 
 ## Limitations
 
-* Encrypted notes (`.dn.gpg`) unsupported — use `duras -c` in shell
-* `:DAppend` always appends to today — use `duras append -d DATE` for past dates
-* `:DSearch` has no `-i` flag — use `duras search -i` from shell
+- Encrypted notes (`.dn.gpg`) unsupported — use `duras -c` in shell
+- `:DAppend` always appends to today — use `duras append -d DATE text` in
+  shell for past dates
+- `:DSearch` has no `-i` flag — use `duras search -i` from shell
 
 ---
 
 ## Scope
 
-* No background processes
-* No state beyond buffer/clipboard
-* No deviation from `duras` CLI behavior
+- No background processes
+- No state beyond buffer/clipboard
+- No deviation from `duras` CLI behavior

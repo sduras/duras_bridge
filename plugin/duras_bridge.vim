@@ -1,7 +1,7 @@
 " File: duras_bridge.vim
 " Description: Vim integration layer for duras CLI
 " Maintainer: Sergiy Duras
-" Repository: https://github.com/sduras/duras_bridge
+" Repository: https://codeberg.org/duras/duras_bridge
 " SPDX-License-Identifier: ISC
 "
 " Notes:

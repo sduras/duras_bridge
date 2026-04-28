@@ -2,7 +2,7 @@
 -- Description: Neovim integration layer for duras CLI
 -- Maintainer: Sergiy Duras
 -- SPDX-License-Identifier: ISC
--- Repository: https://github.com/sduras/duras_bridge
+-- Repository: https://codeberg.org/duras/duras_bridge
 --
 -- Notes:
 -- - minimal bridge between buffer, clipboard, and duras

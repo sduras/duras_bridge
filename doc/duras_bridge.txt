@@ -2,7 +2,7 @@
 
 Author:     Sergiy Duras
 License:    ISC
-Repository: https://github.com/sduras/duras_bridge
+Repository: https://codeberg.org/duras/duras_bridge
 
 ================================================================================
 CONTENTS                                              *duras-bridge-contents*
@@ -22,6 +22,8 @@ daily notes CLI. It covers three axes:
   - Open notes in the current editor session (no nested process)
   - Append buffer content, visual selections, or clipboard text to a note
   - Search notes and navigate results from inside the editor
+
+Requires duras 1.1.0 or later.
 
 Files:
   plugin/duras_bridge.vim   Vim (including a-Shell on iOS)
@@ -53,6 +55,10 @@ No external dependencies beyond the duras CLI itself.
         text            Appends the literal text. No quoting needed:
                             :DAppend meeting notes for Monday
         -               Reads from the system clipboard and appends that.
+
+        All input is normalized by duras before storage: trailing whitespace
+        is stripped per line, consecutive blank lines are collapsed to one,
+        and tabs are converted to spaces.
 
                                                                    *:DSearch*
 :DSearch {keyword}
@@ -132,7 +138,8 @@ system() alongside stdout.
 Encrypted notes (.dn.gpg) are not supported. Use `duras -c` from the shell
 for confidential notes.
 
-:DAppend always appends to today's note. To append to a past date:
+:DAppend always appends to today's note. To append to a past date, use the
+shell directly:
     duras append -d DATE text
 
 :DSearch does not expose the -i flag. For case-insensitive search:
