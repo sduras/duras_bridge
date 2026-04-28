@@ -1,7 +1,7 @@
 # duras_bridge — Vim / Neovim integration
 
 Minimal bridge between editor buffers, the system clipboard, and the
-[duras](https://codeberg.org/duras/duras) CLI.
+[duras](https://github.com/sduras/duras) CLI.
 
 Requires duras 1.1.0 or later.
 
@@ -23,19 +23,19 @@ No dependencies. No plugin manager required.
 **Neovim — lazy.nvim**
 
 ```lua
-{ url = 'https://codeberg.org/duras/duras_bridge' }
+{ url = 'https://github.com/sduras/duras_bridge' }
 ```
 
 **Vim — vim-plug**
 
 ```vim
-Plug 'https://codeberg.org/duras/duras_bridge'
+Plug 'https://github.com/sduras/duras_bridge'
 ```
 
 **Vim — pathogen**
 
 ```sh
-git clone https://codeberg.org/duras/duras_bridge ~/.vim/bundle/duras_bridge
+git clone https://github.com/sduras/duras_bridge ~/.vim/bundle/duras_bridge
 ```
 
 The plugin files live in `plugin/`. Any manager that adds the repo root to
@@ -53,7 +53,7 @@ enable `:help duras_bridge`.
 Clone once, point the editor at it:
 
 ```sh
-git clone https://codeberg.org/duras/duras_bridge ~/src/duras_bridge
+git clone https://github.com/sduras/duras_bridge ~/src/duras_bridge
 ```
 
 **Vim** — add to `.vimrc`:
